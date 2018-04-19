@@ -1,0 +1,68 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>io.konig</groupId>
+  <artifactId>konig-catalog-dev-publish</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+   <properties>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+  	<konig.version>2.0.0-8-SNAPSHOT</konig.version>
+  </properties>
+  <dependencies>
+  
+		<dependency>
+			<groupId>io.konig</groupId>
+			<artifactId>konig-java</artifactId>
+			<version>${konig.version}</version>
+		</dependency>  
+	</dependencies>
+  <build>
+<sourceDirectory>${basedir}/target/generated/src/main/java</sourceDirectory>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.3</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+      <plugin>
+	  		<groupId>io.konig</groupId>
+	  		<artifactId>konig-schemagen-maven-plugin</artifactId>
+	  		<version>${konig.version}</version>
+	  		<configuration>
+	  			<multiProject>
+	  			
+	  				<baseDir>${basedir}/target/generated/demo</baseDir>
+	  				<groupId>com.example</groupId>
+	  				<artifactId>demo</artifactId>
+	  				<version>1.0.0</version>
+	  				<name>Demo</name>
+	  				<konigVersion>${konig.version}</konigVersion>
+	  				
+	  				<workbook>
+	  					<workbookFile>${basedir}/src/konig-catalog-dev.xlsx</workbookFile>
+	  				</workbook>
+	  				<dataCatalog>
+	  					<contentSystem>
+	  						<baseURL>https://konig-catalog-dev-dot-konig-io.appspot.com/content/</baseURL>
+	  						<bundleName>demo</bundleName>
+	  						<bundleVersion>1.0.0</bundleVersion>
+	  					</contentSystem>
+	  				</dataCatalog>
+	  			</multiProject>
+	  		</configuration>
+	  		<executions>
+	  			<execution>
+		  			<phase>generate-sources</phase>
+		  			<goals>
+		  				<goal>generate</goal>
+		  			</goals>
+	  			</execution>
+	  		</executions>
+  		</plugin>
+  		
+    </plugins>
+  </build>
+</project>
