@@ -54,9 +54,6 @@
 					<sourceDirectory>${project.basedir}\..\..\Konig\konig-content-system-gae\target\konig-content-system-gae-2.0.0-8-SNAPSHOT</sourceDirectory>
 					<version>1</version>
 					<runtime>java8</runtime>
-					<services>
-						<service>konig-catalog-dev</service>
-					</services>
 				</configuration>
 			</plugin>
 		</plugins>
