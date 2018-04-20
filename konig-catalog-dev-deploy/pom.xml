@@ -4,9 +4,38 @@
 	<groupId>io.konig</groupId>
 	<artifactId>konig-catalog-dev-deploy</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<properties>
+		<konig.content.system.target>target\konig-content-system-gae</konig.content.system.target>
+	</properties>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.10</version>
+				<executions>
+					<execution>
+						<id>unpack</id>
+						<phase>package</phase>
+						<goals>
+						 	<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.basedir}\${konig.content.system.target}</outputDirectory>
+							<artifactItems>
+								<artifactItem>
+									<groupId>io.konig</groupId>
+									<artifactId>konig-content-system-gae</artifactId>
+									<version>2.0.0-8-SNAPSHOT</version>
+									<overWrite>true</overWrite>
+									<type>war</type>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.3</version>
@@ -15,20 +44,21 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
+			
 			<plugin>
 				<groupId>com.google.code.maven-replacer-plugin</groupId>
 				<artifactId>maven-replacer-plugin</artifactId>
 				<version>1.4.1</version>
 				<executions>
 					<execution>
-						<phase>prepare-package</phase>
+						<phase>package</phase>
 						<goals>
 							<goal>replace</goal>
 						</goals>
 					</execution>
 				</executions>
 				<configuration>
-					<file>..\..\Konig\konig-content-system-gae\target\konig-content-system-gae-2.0.0-8-SNAPSHOT\WEB-INF\appengine-web.xml</file>
+					<file>${konig.content.system.target}\WEB-INF\appengine-web.xml</file>
 					<delimiters>
 						<delimiter>%</delimiter>
 					</delimiters>
@@ -44,6 +74,7 @@
 					</replacements>
 				</configuration>
 			</plugin>
+			
 			<plugin>
 				<groupId>com.google.cloud.tools</groupId>
 				<artifactId>appengine-maven-plugin</artifactId>
@@ -51,7 +82,7 @@
 				<configuration>
 					<project>konig-io</project>
 					<bucket>gs://konig-data-catalog-staging</bucket>
-					<sourceDirectory>${project.basedir}\..\..\Konig\konig-content-system-gae\target\konig-content-system-gae-2.0.0-8-SNAPSHOT</sourceDirectory>
+					<sourceDirectory>${project.basedir}\${konig.content.system.target}</sourceDirectory>
 					<version>1</version>
 					<runtime>java8</runtime>
 				</configuration>
